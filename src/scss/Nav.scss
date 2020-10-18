@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+$menu-items: 7;
+$width: (100 / $menu-items) * 1%;
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+header {
+  margin: 0 3rem;
+
+  .line {
+    height: 1px;
+    background: lighten(gray, 20%);
+  }
+
+  .nav {
+    @extend %cf;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+
+    @for $i from 1 through $menu-items - 1 {
+      .city:nth-child(#{$i}).is-active ~ .city:last-child:after {
+        left:($width * $i) - $width;
+      }
+    }
+  }
+
+  .city {
+    background: #fff;
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: $width;
+    text-align: center;
+
+    &.is-active {
+      &:before {
+        left: (100% - $width) + ($width / 2) !important;
+      }
+      &:after{
+        left: 100% - $width !important;
+      }
+    }
+
+    a {
+      color: gray;
+      display: inline-block;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      text-decoration: none;
+
+      &:hover {
+        color: lightblue;
+      }
+    }
+
+    &.is-active a {
+      color: black;
+    }
+
+    &:last-child {
+      &:before, &:after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        transition: left .3s ease;
+      }
+
+      &:after {
+        background: black;
+        top: 0;
+        bottom: -1px;
+        left: 0;
+        width: $width;
+        z-index: -1;
+      }
+    }
+  }
+}
+
+// global resets
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+// Microclearfix
+%cf:before,
+%cf:after {
+    content: " ";
+    display: table;
+}
+%cf:after {
+    clear: both;
+}
